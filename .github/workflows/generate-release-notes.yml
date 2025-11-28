@@ -4,55 +4,55 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "**"   # detecta cualquier cambio en el repositorio
+      - "**"
+
+permissions:
+  contents: write
 
 jobs:
-  release-notes:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Simulate AI Release Notes
-        id: ai_sim
+      - name: Generate AI Release Notes (Simulation)
         run: |
-          echo "IA-SIMULATION: Analizando commits..."
-          echo "IA-SIMULATION: Commit 1: Optimización del API."
-          echo "IA-SIMULATION: Commit 2: Fix en módulo de facturación."
-          echo "IA-SIMULATION: Commit 3: Actualización de dependencias."
-          echo "IA-SIMULATION: Clasificando cambios..."
-          echo "IA-SIMULATION: Generando Release Notes simulados..."
+          echo "IA-SIM: Analizando commits..."
+          echo "IA-SIM: Generando release notes..."
 
-          cat <<EOF > RELEASE_NOTES_v1.7.0.md
-# 🚀 AdventureWorks – Release Notes v1.7.0  
+          cat << 'EOF' > RELEASE_NOTES_v1.7.0.md
+# 🚀 AdventureWorks – Release Notes v1.7.0
+
 Generado automáticamente por IA simulada (GitHub Actions)
 
 ## Mejoras
-- Optimización del API de timbrado
-- Mejora en tiempos de respuesta
-- Ajuste de infraestructura
+- Optimización del API.
+- Mejora en tiempos de respuesta.
+- Ajustes de infraestructura.
 
 ## Correcciones
-- Fix en módulo de facturación
-- Manejo de errores 5xx
+- Fix en módulo de facturación.
+- Manejo de errores 5xx.
 
-Responsable: Ricardo López – DevOps Engineer
+Responsable: Ricardo López – DevOps Engineer  
 Aprobado por: Ing. Mariana Herrera – Jefa de Infraestructura
 EOF
 
-      - name: Commit release notes
+      - name: Move file
         run: |
           mkdir -p release
           mv RELEASE_NOTES_v1.7.0.md release/
 
-          git config --global user.name "CI Bot"
-          git config --global user.email "cibot@example.com"
-
+      - name: Commit Release Notes
+        run: |
+          git config user.name "CI Bot"
+          git config user.email "cibot@example.com"
           git add release/RELEASE_NOTES_v1.7.0.md
-          git commit -m "auto: generated release notes v1.7.0 (AI Simulation)" || echo "No changes to commit"
+          git commit -m "auto: generated release notes (AI simulation)" || echo "No changes"
 
-      - name: Upload artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: release-notes
