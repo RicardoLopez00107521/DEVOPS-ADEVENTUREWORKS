@@ -1,0 +1,1 @@
+console.log("Aplicación Node.js para evidencia del pipeline.");

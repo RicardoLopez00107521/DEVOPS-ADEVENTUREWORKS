@@ -1,0 +1,12 @@
+{
+  "name": "devops-adventureworks",
+  "version": "1.0.0",
+  "description": "Proyecto base para evidencia CI/CD del plan DevOps",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "build": "echo 'Build completado'"
+  },
+  "author": "Ricardo López",
+  "license": "MIT"
+}
