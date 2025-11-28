@@ -1,0 +1,73 @@
+{
+  "title": "DevOps - Sistema de Facturación Electrónica",
+  "uid": "devops-facturacion",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Latencia Promedio (ms)",
+      "targets": [
+        {
+          "expr": "rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])",
+          "legendFormat": "Latencia"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "type": "graph",
+      "title": "Errores por Segundo (5xx / 4xx)",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+          "legendFormat": "Errores 5xx"
+        },
+        {
+          "expr": "rate(http_requests_total{status=~\"4..\"}[5m])",
+          "legendFormat": "Errores 4xx"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "type": "gauge",
+      "title": "Uso de CPU (%)",
+      "targets": [
+        {
+          "expr": "(100 - (avg by(instance)(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100))",
+          "legendFormat": "CPU"
+        }
+      ],
+      "id": 3,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "type": "gauge",
+      "title": "Uso de Memoria (%)",
+      "targets": [
+        {
+          "expr": "((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100",
+          "legendFormat": "Memoria"
+        }
+      ],
+      "id": 4,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "type": "stat",
+      "title": "Disponibilidad (%)",
+      "targets": [
+        {
+          "expr": "100 - (rate(service_downtime_seconds_total[5m]) * 100)",
+          "legendFormat": "Uptime"
+        }
+      ],
+      "id": 5
+    }
+  ]
+}
